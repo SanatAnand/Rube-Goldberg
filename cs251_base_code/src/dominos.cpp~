@@ -49,7 +49,7 @@ namespace cs251
 		/*! \var b1
 		* \brief pointer to the body ground
 		*/
-		b2Body* b1;
+		//b2Body* b1;
 		{
 			
 			b2EdgeShape shape;
@@ -67,7 +67,7 @@ namespace cs251
 			b2BodyDef bd;
 			bd.position.Set(-31.0f, 30.0f);
 			b2Body* ground = m_world->CreateBody(&bd);
-			ground->SetTransform( ground->GetPosition(), -0.1 );
+			ground->SetTransform( ground->GetPosition(), 0 );
 			ground->CreateFixture(&shape, 0.0f);
 		}
 		
@@ -88,7 +88,8 @@ namespace cs251
 			shaperight.SetAsBox(1.0f, 6.0f);
 			
 			b2BodyDef bd;
-			bd.position.Set(-26.0f, 37.35f);
+			bd.type = b2_dynamicBody;				
+			bd.position.Set(-27.9f, 36.0f);
 			b2Body* ground = m_world->CreateBody(&bd);
 			ground->CreateFixture(&shaperight, 0.0f);
 			
@@ -107,13 +108,23 @@ namespace cs251
 		//Sliding Pipe Upper
 		{
 			b2EdgeShape shape;
-			shape.Set(b2Vec2(-26.0f, 33.0f), b2Vec2(-18.0f, 23.0f));
+			shape.Set(b2Vec2(-26.0f, 36.0f), b2Vec2(-18.0f, 26.0f));
 			b2BodyDef bd;
 			b1 = m_world->CreateBody(&bd);
 			b1->CreateFixture(&shape, 0.0f);
 	
-		}	
+		}
+		//Sliding Pipe Vertical Cover
+		{
+			b2EdgeShape shape;
+			shape.Set(b2Vec2(-26.0f, 36.0f), b2Vec2(-26.0f, 50.0f));
+			b2BodyDef bd;
+			b1 = m_world->CreateBody(&bd);
+			b1->CreateFixture(&shape, 0.0f);
+	
+		}
 
+		//Turbine
 		{	
 			int rad=1.5;
 			b2CircleShape circle;
@@ -175,6 +186,69 @@ namespace cs251
 			jointDef.localAnchorB.Set(0,0);
 			jointDef.collideConnected = true;
 			m_world->CreateJoint(&jointDef);					
+
+			//Pulley System
+			{
+				b2BodyDef *bd = new b2BodyDef;
+				bd->type = b2_dynamicBody;
+				bd->position.Set(-10,15);
+				bd->fixedRotation = true;
+				
+			/*
+				//The open box
+				b2FixtureDef *fd1 = new b2FixtureDef;
+				fd1->density = 10.0;
+				fd1->friction = 0.5;
+				fd1->restitution = 0.f;
+				fd1->shape = new b2PolygonShape;
+				b2PolygonShape bs1;
+				bs1.SetAsBox(2,0.2, b2Vec2(0.f,-1.9f), 0);
+				fd1->shape = &bs1;
+				b2FixtureDef *fd2 = new b2FixtureDef;
+				fd2->density = 10.0;
+				fd2->friction = 0.5;
+				fd2->restitution = 0.f;
+				fd2->shape = new b2PolygonShape;
+				b2PolygonShape bs2;
+				bs2.SetAsBox(0.2,2, b2Vec2(2.0f,0.f), 0);
+				fd2->shape = &bs2;
+				b2FixtureDef *fd3 = new b2FixtureDef;
+				fd3->density = 10.0;
+				fd3->friction = 0.5;
+				fd3->restitution = 0.f;
+				fd3->shape = new b2PolygonShape;
+				b2PolygonShape bs3;
+				bs3.SetAsBox(0.2,2, b2Vec2(-2.0f,0.f), 0);
+				fd3->shape = &bs3;
+			
+			
+				b2Body* box1 = m_world->CreateBody(bd);
+				box1->CreateFixture(fd1);
+				box1->CreateFixture(fd2);
+				box1->CreateFixture(fd3);
+			*/
+
+				//The bar
+				b2FixtureDef *fd1 = new b2FixtureDef;
+				fd1->density = 10.0;
+				fd1->friction = 0.5;
+				fd1->restitution = 0.f;
+				fd1->shape = new b2PolygonShape;				
+				bd->position.Set(10,15);
+				fd1->density = 34.0;
+				b2Body* box2 = m_world->CreateBody(bd);
+				box2->CreateFixture(fd1);
+			
+				// The pulley joint
+				b2PulleyJointDef* myjoint = new b2PulleyJointDef();
+				b2Vec2 worldAnchorOnBody1(0, 15); // Anchor point on body 1 in world axis
+				b2Vec2 worldAnchorOnBody2(10, 15); // Anchor point on body 2 in world axis
+				b2Vec2 worldAnchorGround1(0, 20); // Anchor point for ground 1 in world axis
+				b2Vec2 worldAnchorGround2(10, 20); // Anchor point for ground 2 in world axis
+				float32 ratio = 1.0f; // Define ratio
+				myjoint->Initialize(body2, box2, worldAnchorGround1, worldAnchorGround2, body2->GetWorldCenter(), box2->GetWorldCenter(), ratio);
+				m_world->CreateJoint(myjoint);
+			}
 		/*
 			for(int i=0; i<8 ; i++)
 			{
@@ -187,11 +261,12 @@ namespace cs251
 			}
 			
 		*/
-		
+
+
 		}
 	
 		
-		//Dominos
+		//Water Balls in Dam
 		{
 			
 			b2CircleShape shape;
@@ -205,7 +280,7 @@ namespace cs251
 			fd.shape = &shape;
 			fd.density = 20.0f;
 			fd.friction = 0.1f;
-			for (int j = 0; j< 1;j++)
+			for (int j = 0; j< 10;j++)
 			{
 				for (int i = 0; i < 8; ++i)
 				{
@@ -217,6 +292,7 @@ namespace cs251
 				}
 			}
 		}
+		
 		
 	/*
 
