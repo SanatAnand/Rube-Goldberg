@@ -132,9 +132,9 @@ namespace cs251
     virtual void keyboard_up(unsigned char key) { B2_NOT_USED(key); }
 
     void shift_mouse_down(const b2Vec2& p) { B2_NOT_USED(p); }
-    virtual bool mouse_down(const b2Vec2& p) { B2_NOT_USED(p); }
+    virtual void mouse_down(const b2Vec2& p) { B2_NOT_USED(p); }
     virtual void mouse_up(const b2Vec2& p) { B2_NOT_USED(p); }
-    virtual void mouse_move(const b2Vec2& p) { B2_NOT_USED(p); }
+    void mouse_move(const b2Vec2& p) { B2_NOT_USED(p); }
 
     
     // Let derived tests know that a joint was destroyed.
