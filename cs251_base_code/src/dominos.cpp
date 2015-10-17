@@ -51,6 +51,8 @@ namespace cs251
 		* \brief pointer to the body ground
 		*/
 		b2Body* b1;
+		
+		//Ground (Long) at the level of the GATE
 		{
 			
 			b2EdgeShape shape;
@@ -60,7 +62,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 		}
 		
-		//Top horizontal shelf
+		//Horizontal shelf of the Dam on which the water rests 
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(6.5f, 0.25f);
@@ -72,7 +74,7 @@ namespace cs251
 			ground->CreateFixture(&shape, 0.0f);
 		}
 		
-		//Top Control Gate Left Wall
+		//Top Control Gate Left Wall of Dam
 		{
 			b2PolygonShape shapeleft;
 			shapeleft.SetAsBox(0.5f, 2.0f);
@@ -104,7 +106,7 @@ namespace cs251
 			
 		}*/
 		
-		//Sliding Pipe Bottom
+		//Sliding Pipe for Dam water Bottom Piece
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-26.0f, 30.0f), b2Vec2(-18.0f, 20.0f));
@@ -114,7 +116,7 @@ namespace cs251
 	
 		}
 		
-		//Sliding Pipe Upper
+		//Sliding Pipe for Dam water Upper Piece
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-24.0f, 36.0f), b2Vec2(-14.0f, 26.0f));
@@ -123,7 +125,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 	
 		}
-		//Sliding Pipe Vertical Cover
+		//Right side Dam Vertical Cover
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(-24.0f, 36.0f), b2Vec2(-24.0f, 44.8f));
@@ -131,6 +133,33 @@ namespace cs251
 			b1 = m_world->CreateBody(&bd);
 			b1->CreateFixture(&shape, 0.0f);
 	
+		}
+
+		//Water Balls in Dam
+		{
+			
+			b2CircleShape shape;
+			shape.m_p.Set(0, 0); //position, relative to body position
+			shape.m_radius = 0.2;
+			b2FixtureDef fd;
+			fd.shape = &shape;
+			fd.density = 500000.0f;
+			fd.friction = 0.1f;
+			int j=0;
+			int i=0;
+			while(j<15)
+			{	int i=0;
+				while(i<8)
+				{	
+					b2BodyDef bd;
+					bd.type = b2_dynamicBody;
+					bd.position.Set(-32.1f + 0.40f * i, 31.25f + 0.40f * j);
+					b2Body* body = m_world->CreateBody(&bd);
+					body->CreateFixture(&fd);
+					i++;
+				}
+				j++;
+			}
 		}
 
 		//Turbine
@@ -196,14 +225,16 @@ namespace cs251
 			jointDef.collideConnected = true;
 			m_world->CreateJoint(&jointDef);					
 		
-			//Pulley System
+			//Pulley System between the turbine and the the hanging block
 			{
-				//bar				
+				//Turbine as the body				
 				b2BodyDef *bd = new b2BodyDef;
 				bd->type = b2_dynamicBody;
 				//bd->position.Set(10,8);
 				bd->position.Set(10,20);
 				bd->fixedRotation = true;
+				
+				//Block hanging on the other side
 				b2FixtureDef *fd1 = new b2FixtureDef;
 				fd1->friction = 1.5;
 				fd1->restitution = 0.f;
@@ -228,75 +259,57 @@ namespace cs251
 				m_world->CreateJoint(myjoint);
 			}
 		}
-				
-		/*
-			for(int i=0; i<8 ; i++)
+		
+		//The partition between left side and right side of the screen  (Walls)		
+		{
+			//Inclined plank 
 			{
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(7.5f, 14.0f), b2Vec2(15.0f, 18.0f));
 				b2BodyDef bd;
-				bd.position.Set(0.0f + (2+rad)*cos((6.2824*i)/8), 20.0f + (2+rad)*sin((6.2824*i)/8));
-				b2Body* ground = m_world->CreateBody(&bd);
-				ground->SetTransform( ground->GetPosition(), (i*3.1412)/4 );				 
-				ground->CreateFixture(&shape, 0.0f);					
-						
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
+		
 			}
-			
-		*/
 
-		//Inclined plank 
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(7.5f, 14.0f), b2Vec2(15.0f, 18.0f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
-		}
+			{
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(5.5f, 7.0f), b2Vec2(0.0f, 10.0f));
+				b2BodyDef bd;
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
+		
+			}
 
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(5.5f, 7.0f), b2Vec2(0.0f, 10.0f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
-		}
+			//vertical partition for dam water balls on ground
+			{
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(-10.0f, 8.0f), b2Vec2(0.0f, 13.0f));
+				b2BodyDef bd;
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
+		
+			}
 
-		/*
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(7.0f, 4.0f), b2Vec2(12.0f, 6.0f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
-		}
-		*/
-		//vertical partition for dam water balls on ground
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(-10.0f, 8.0f), b2Vec2(0.0f, 13.0f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
+			{
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(0.0f, 20.0f), b2Vec2(0.0f, 0.0f));
+				b2BodyDef bd;
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
+		
+			}
+			{
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(0.0f, 0.0f), b2Vec2(20.0f, 0.0f));
+				b2BodyDef bd;
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
+		
+			}
 		}
 
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(0.0f, 20.0f), b2Vec2(0.0f, 0.0f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
-		}
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(0.0f, 0.0f), b2Vec2(20.0f, 0.0f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
-		}
+		//Open Box which will collect and return the water back to the top of the dam
 		{
 			b2BodyDef *bd = new b2BodyDef;
 			bd->type = b2_dynamicBody;
@@ -334,35 +347,10 @@ namespace cs251
 			box1->CreateFixture(fd1);
 			box1->CreateFixture(fd2);
 			box1->CreateFixture(fd3);
-			//box1->SetLinearVelocity(vel);
-			//box1->SetRotation(true);
 
 		}
-		/*{	
-			b2PolygonShape shaperight;
-			shaperight.SetAsBox(1.0f, 6.0f);
-			
-			b2BodyDef bd;
-			bd.type = b2_dynamicBody;				
-			bd.position.Set(-21.0f, 7.0f);
-			b2Body* ground = m_world->CreateBody(&bd);
-			b2FixtureDef *a=new b2FixtureDef ;
-			bd.fixedRotation=true;
-			a->shape=&shaperight;
-			a->density=3.0f;
-			ground->CreateFixture(a);
-			
-		} 
-		{
-			b2PolygonShape shape;
-			shape.SetAsBox(5.0f, 1.5f);
-			
-			b2BodyDef bd;
-			bd.position.Set(-15.0f, 1.5f);
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->SetTransform( ground->GetPosition(), 0 );
-			ground->CreateFixture(&shape, 0.0f);
-		}*/
+		
+		//The ground on which the open water box is resting
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(15.0f, 0.75f);
@@ -373,27 +361,8 @@ namespace cs251
 			ground->SetTransform( ground->GetPosition(), 0 );
 			ground->CreateFixture(&shape, 0.0f);
 		}
-		/*
-		{
-			b2PolygonShape shape;
-			shape.SetAsBox(0.5f, 1.5f);
-			
-			b2BodyDef bd;
-			bd.position.Set(-51.1f, 1.5f);
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->SetTransform( ground->GetPosition(), 0 );
-			ground->CreateFixture(&shape, 0.0f);
-		}
-		{
-			b2PolygonShape shape;
-			shape.SetAsBox(0.5f, .0f);
-			
-			b2BodyDef bd;
-			bd.position.Set(-51.1f, 28.5f);
-			b2Body* ground = m_world->CreateBody(&bd);
-			ground->SetTransform( ground->GetPosition(), 0 );
-			ground->CreateFixture(&shape, 0.0f);
-		}*/
+		
+		//The flying plank (which takes the water back to the top of the Dam)
 		{
 			b2PolygonShape shaperight;
 			shaperight.SetAsBox(5.0f, 0.1f);
@@ -410,63 +379,59 @@ namespace cs251
 			ground->CreateFixture(a);
 			ground->SetGravityScale(-0.002);
 		}
+		//Right side vertical cover for the lift of the open water box
 		{
-				b2PolygonShape shape;
-				shape.SetAsBox(0.2f, 10.0f);
-				
-				b2BodyDef bd;
-				bd.position.Set(-5.4f, 0.0f);
-				bd.type = b2_dynamicBody;
-				b2Body* body = m_world->CreateBody(&bd);
-				b2FixtureDef *fd = new b2FixtureDef;
-				fd->density = 100000000.0f;
-				fd->shape = new b2PolygonShape;
-				fd->shape = &shape;
-				body->CreateFixture(fd);
-				
-				b2PolygonShape shape2;
-				shape2.SetAsBox(5.4f, 6.0f);
-				b2BodyDef bd2;
-				bd2.position.Set(-5.4f, 0.0f);
-				b2Body* body2 = m_world->CreateBody(&bd2);
-				
-				b2RevoluteJointDef jointDef;
-				jointDef.bodyA = body;
-				jointDef.bodyB = body2;
-				jointDef.localAnchorA.Set(0,1.4);
-				jointDef.localAnchorB.Set(0,0);
-				jointDef.collideConnected = true;
-				m_world->CreateJoint(&jointDef);
-			}
 		
-		/*{
-			b2PolygonShape shaperight;
-			shaperight.SetAsBox(0.5f, 0.5f);
+			b2EdgeShape shape;
+			shape.Set(b2Vec2(-39.0f, 10.0f), b2Vec2(-39.0f, 30.0f));
+			b2BodyDef bd;
+			b1 = m_world->CreateBody(&bd);
+			b1->CreateFixture(&shape, 0.0f);
+		}
+		//Left side vertical cover for the lift of the open water box
+		{
+		
+			b2EdgeShape shape;
+			shape.Set(b2Vec2(-55.0f, 10.0f), b2Vec2(-55.0f, 40.0f));
+			b2BodyDef bd;
+			b1 = m_world->CreateBody(&bd);
+			b1->CreateFixture(&shape, 0.0f);
+		}
+		//The Vertical revolving plank which pushes the open  water box towards the right		
+		{
+			b2PolygonShape shape;
+			shape.SetAsBox(0.2f, 10.0f);
 			
 			b2BodyDef bd;
-			bd.type = b2_dynamicBody;				
-			bd.position.Set(-45.0f, -18.0f);
-			b2Body* ground = m_world->CreateBody(&bd);
-			b2FixtureDef *a=new b2FixtureDef ;
-			bd.fixedRotation=true;
-			a->shape=&shaperight;
-			a->density=3000000001.0f;
-			ground->CreateFixture(a);
-			ground->SetGravityScale(50.50);
-		}*/
-
-
-		
-		//ball resting to strike the air-pump
+			bd.position.Set(-5.4f, 0.0f);
+			bd.type = b2_dynamicBody;
+			b2Body* body = m_world->CreateBody(&bd);
+			b2FixtureDef *fd = new b2FixtureDef;
+			fd->density = 100000000.0f;
+			fd->shape = new b2PolygonShape;
+			fd->shape = &shape;
+			body->CreateFixture(fd);
+			
+			b2PolygonShape shape2;
+			shape2.SetAsBox(5.4f, 6.0f);
+			b2BodyDef bd2;
+			bd2.position.Set(-5.4f, 0.0f);
+			b2Body* body2 = m_world->CreateBody(&bd2);
+			
+			b2RevoluteJointDef jointDef;
+			jointDef.bodyA = body;
+			jointDef.bodyB = body2;
+			jointDef.localAnchorA.Set(0,1.4);
+			jointDef.localAnchorB.Set(0,0);
+			jointDef.collideConnected = true;
+			m_world->CreateJoint(&jointDef);
+		}		
+		//Ball resting to strike the air-pump 
 		{
 			
 			b2CircleShape shape;
 			shape.m_p.Set(0, 0); //position, relative to body position
 			shape.m_radius = 0.5;
-			/*
-			b2PolygonShape shape;
-			shape.SetAsBox(0.1f, 1.0f);
-			*/
 			b2FixtureDef fd;
 			fd.shape = &shape;
 			fd.density = 200000.0f;
@@ -478,39 +443,10 @@ namespace cs251
 			body->CreateFixture(&fd);
 
 		}
-
-	
-		
-		//Water Balls in Dam
-		{
-			
-			b2CircleShape shape;
-			shape.m_p.Set(0, 0); //position, relative to body position
-			shape.m_radius = 0.2;
-			b2FixtureDef fd;
-			fd.shape = &shape;
-			fd.density = 500000.0f;
-			fd.friction = 0.1f;
-			int j=0;
-			int i=0;
-			while(j<15)
-			{	int i=0;
-				while(i<8)
-				{	
-					b2BodyDef bd;
-					bd.type = b2_dynamicBody;
-					bd.position.Set(-32.1f + 0.40f * i, 31.25f + 0.40f * j);
-					b2Body* body = m_world->CreateBody(&bd);
-					body->CreateFixture(&fd);
-					i++;
-				}
-				j++;
-			}
-		}
-		
 	
 	//-------------------------------------------------------------------------------------------------	
 
+			//Top-most revolving platform (Hit by the balloon second)
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(8.2f, 0.2f);
@@ -539,6 +475,7 @@ namespace cs251
 				jointDef.collideConnected = false;
 				m_world->CreateJoint(&jointDef);
 			}
+			//Ball resting on topmost revolving platform
 			{
 				b2Body* sbody;
 				b2CircleShape circle;
@@ -555,7 +492,9 @@ namespace cs251
 				sbody = m_world->CreateBody(&ballbd);
 				sbody->CreateFixture(&ballfd);
 			}
+			//top horizontal surface on which the dominos rest
 			{
+
 			
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-46.0f, 45.0f), b2Vec2(0.0f, 45.0f));
@@ -563,23 +502,7 @@ namespace cs251
 				b1 = m_world->CreateBody(&bd);
 				b1->CreateFixture(&shape, 0.0f);
 			}
-			{
-			
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-39.0f, 10.0f), b2Vec2(-39.0f, 30.0f));
-				b2BodyDef bd;
-				b1 = m_world->CreateBody(&bd);
-				b1->CreateFixture(&shape, 0.0f);
-			}
-						{
-			
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-55.0f, 10.0f), b2Vec2(-55.0f, 40.0f));
-				b2BodyDef bd;
-				b1 = m_world->CreateBody(&bd);
-				b1->CreateFixture(&shape, 0.0f);
-			}
-
+			//Dominos at the topmost horizontal plank
 			{
 			      b2PolygonShape shape;
 			      shape.SetAsBox(0.2f, 1.0f);
@@ -597,6 +520,7 @@ namespace cs251
 			      fd2.density = 20.0f;
 			      fd2.friction = 0.1f;
 
+			      //first set of 30 dominos
 			      for (int i = 0; i < 10; ++i)
 				{ 	
 					for(int j=0; j<3 ; j++)
@@ -609,6 +533,7 @@ namespace cs251
 					}
 				}
 
+				//next set of 21 dominos
 				for (int i = 3; i < 10; ++i)
 				{ 	
 					for(int j=0; j<3 ; j++)
@@ -620,25 +545,28 @@ namespace cs251
 					  body->CreateFixture(&fd);
 					}
 				} 
-					  b2BodyDef bd;
-					  bd.type = b2_dynamicBody;
-					  bd.position.Set(-44.0f , 45.7f );				  
-					  b2Body* body = m_world->CreateBody(&bd);
-					  body->CreateFixture(&fd);
+				 
+				// last three single dominos
+				  b2BodyDef bd;
+				  bd.type = b2_dynamicBody;
+				  bd.position.Set(-44.0f , 45.7f );				  
+				  b2Body* body = m_world->CreateBody(&bd);
+				  body->CreateFixture(&fd);
 
-					  b2BodyDef bd2;
-					  bd2.type = b2_dynamicBody;
-					  bd2.position.Set(-42.5f , 45.7f );				  
-					  b2Body* body2 = m_world->CreateBody(&bd2);
-					  body2->CreateFixture(&fd);
+				  b2BodyDef bd2;
+				  bd2.type = b2_dynamicBody;
+				  bd2.position.Set(-42.5f , 45.7f );				  
+				  b2Body* body2 = m_world->CreateBody(&bd2);
+				  body2->CreateFixture(&fd);
 
-					  b2BodyDef bd3;
-					  bd3.type = b2_dynamicBody;
-					  bd3.position.Set(-41.0f , 45.7f );				  
-					  b2Body* body3 = m_world->CreateBody(&bd3);
-					  body3->CreateFixture(&fd);
+				  b2BodyDef bd3;
+				  bd3.type = b2_dynamicBody;
+				  bd3.position.Set(-41.0f , 45.7f );				  
+				  b2Body* body3 = m_world->CreateBody(&bd3);
+				  body3->CreateFixture(&fd);
 			}
 
+			//Heavy ball at the leftmost end of the domino chain at the top horizontal surfa
 			{
 				b2Body* sbody;
 				b2CircleShape circle;
@@ -657,16 +585,15 @@ namespace cs251
 
 
 			}
-
+			//Inclined surface for the heavy ball to fall on 
 			{
-			
 				b2EdgeShape shape;
 				shape.Set(b2Vec2(-46.0f, 45.0f), b2Vec2(-65.0f, 39.0f));
 				b2BodyDef bd;
 				b1 = m_world->CreateBody(&bd);
 				b1->CreateFixture(&shape, 0.0f);
 			}
-
+			/*
 			{
 			
 				b2EdgeShape shape;
@@ -674,26 +601,8 @@ namespace cs251
 				b2BodyDef bd;
 				b1 = m_world->CreateBody(&bd);
 				b1->CreateFixture(&shape, 0.0f);
-			}
-
-			/*{
-			
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-70.0f, 35.0f), b2Vec2(-60.0f, -3.0f));
-				b2BodyDef bd;
-				b1 = m_world->CreateBody(&bd);
-				b1->CreateFixture(&shape, 0.0f);
 			}*/
-
-			{
-			
-				b2EdgeShape shape;
-				shape.Set(b2Vec2(-40.0f, -12.5f), b2Vec2(0.0f, -12.5f));
-				b2BodyDef bd;
-				b1 = m_world->CreateBody(&bd);
-				b1->CreateFixture(&shape, 0.0f);
-			}
-
+			//Chain Object
 			{
 				b2Vec2 vs[50];
 				float x=0,y=0; 
@@ -712,7 +621,7 @@ namespace cs251
 				b1->CreateFixture(&chain, 0.0f);
 
 			}
-
+			//Chain Object
 			{
 				b2Vec2 vs[40];
 				float x=0,y=0; 
@@ -731,6 +640,7 @@ namespace cs251
 				b1->CreateFixture(&chain, 0.0f);
 
 			}
+			//Chain Object
 			{
 				b2Vec2 vs[40];
 				float x=0,y=0; 
@@ -749,57 +659,55 @@ namespace cs251
 				b1->CreateFixture(&chain, 0.0f);
 
 			}
+			//Horizontal surface below the open water box for the heavy ball to fall on and push the revolving plank
+			{
+			
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(-40.0f, -12.5f), b2Vec2(0.0f, -12.5f));
+				b2BodyDef bd;
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
+			}	
+	
+		//Edges for the Shape of the Air-Pump
+		{
+			//left edge
+			{
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(8.4f, 0.0f), b2Vec2(8.4f, 5.0f));
+				b2BodyDef bd;
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
 		
-
-
-	//-------------------------------------------------------------------------------------------------	
-	
-	
-	
+			}
+			//right edge upper
+			{
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(9.4f, 1.8f), b2Vec2(9.4f, 5.0f));
+				b2BodyDef bd;
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
 		
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(8.4f, 0.0f), b2Vec2(8.4f, 5.0f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
-		}
+			}
+			//right edge lower
+			{
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(9.4f, 0.0f), b2Vec2(9.4f, 0.9f));
+				b2BodyDef bd;
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
 		
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(9.4f, 1.8f), b2Vec2(9.4f, 5.0f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
+			}
+			//horizontal pipe edge 
+			{
+				b2EdgeShape shape;
+				shape.Set(b2Vec2(9.4f, 0.4f), b2Vec2(12.8f, 0.40f));
+				b2BodyDef bd;
+				b1 = m_world->CreateBody(&bd);
+				b1->CreateFixture(&shape, 0.0f);
+			}
 		}
-
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(9.4f, 0.0f), b2Vec2(9.4f, 0.9f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
-		}
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(9.4f, 0.50f), b2Vec2(12.8f, 0.5f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
-		}
-		{
-			b2EdgeShape shape;
-			shape.Set(b2Vec2(9.4f, 0.4f), b2Vec2(12.8f, 0.40f));
-			b2BodyDef bd;
-			b1 = m_world->CreateBody(&bd);
-			b1->CreateFixture(&shape, 0.0f);
-	
-		}
-
+		//The Pump pf the Air-PumpS
 		{
 			b2BodyDef *bd = new b2BodyDef;
 			bd->type = b2_dynamicBody;
@@ -826,6 +734,7 @@ namespace cs251
 			box1->CreateFixture(fd1);
 			box1->CreateFixture(fd2);
 		}
+		//Extremely thin revolving plank for the Air-Pump
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(2.5f, 0.000005f);
@@ -854,7 +763,7 @@ namespace cs251
 			jointDef.collideConnected = false;
 			m_world->CreateJoint(&jointDef);
 		}
-
+		//Balloon
 		{
 			b2Body* sbody;
 			b2CircleShape circle;
@@ -872,6 +781,7 @@ namespace cs251
 			sbody->CreateFixture(&ballfd);
 			sbody->SetGravityScale(-0.2);
 		}
+		//Extremely Small ball helping in working of the Air-Pump
 		{
 			b2Body* sbody;
 			b2CircleShape circle;
@@ -889,9 +799,10 @@ namespace cs251
 			sbody->CreateFixture(&ballfd);
 		}
 
-
+		//---------------------------------------------------------------------
 		//The ball-hinge system 
 		{
+			//Revolving Platform at the top to which the balloon strikes first
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(8.2f, 0.2f);
@@ -920,6 +831,7 @@ namespace cs251
 				jointDef.collideConnected = false;
 				m_world->CreateJoint(&jointDef);
 			}
+			//Ball resting on the above horizontal revolving platform
 			{
 				b2Body* sbody;
 				b2CircleShape circle;
@@ -936,6 +848,7 @@ namespace cs251
 				sbody = m_world->CreateBody(&ballbd);
 				sbody->CreateFixture(&ballfd);
 			}
+			//Top plank of the ball-hinge system
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(6.0f, 0.2f);
@@ -946,6 +859,7 @@ namespace cs251
 				ground->SetTransform( ground->GetPosition(), 0 );
 				ground->CreateFixture(&shape, 0.0f);
 			}
+			//Left cover at the top plank for the ball-hinge on the left side
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(0.2f, 0.4f);
@@ -956,6 +870,7 @@ namespace cs251
 				ground->SetTransform( ground->GetPosition(), 0 );
 				ground->CreateFixture(&shape, 0.0f);
 			}
+			// Vertical revolving plank (Right side of the top plank of the ball-hinge system)
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(0.1f, 3.0f);
@@ -984,6 +899,7 @@ namespace cs251
 				jointDef.collideConnected = true;
 				m_world->CreateJoint(&jointDef);
 			}
+			//Ball resting on the right side of the 2nd plank of the ball-hinge system
 			{
 				b2Body* sbody;
 				b2CircleShape circle;
@@ -1000,7 +916,7 @@ namespace cs251
 				sbody = m_world->CreateBody(&ballbd);
 				sbody->CreateFixture(&ballfd);
 			}
-
+			//The second plank from top of the ball-hinge system
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(6.0f, 0.2f);
@@ -1011,6 +927,7 @@ namespace cs251
 				ground->SetTransform( ground->GetPosition(), 0 );
 				ground->CreateFixture(&shape, 0.0f);
 			}
+			// Vertical revolving plank (Left side of the second plank of the ball-hinge system)
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(0.1f, 3.0f);
@@ -1039,6 +956,7 @@ namespace cs251
 				jointDef.collideConnected = true;
 				m_world->CreateJoint(&jointDef);
 			}
+			//Ball resting on the left side of the 3rd plank of the ball-hinge system
 			{
 				b2Body* sbody;
 				b2CircleShape circle;
@@ -1055,6 +973,7 @@ namespace cs251
 				sbody = m_world->CreateBody(&ballbd);
 				sbody->CreateFixture(&ballfd);
 			}
+			//The third plank from top of the ball-hinge system
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(6.0f, 0.2f);
@@ -1065,6 +984,7 @@ namespace cs251
 				ground->SetTransform( ground->GetPosition(), 0 );
 				ground->CreateFixture(&shape, 0.0f);
 			}
+			// Vertical revolving plank (Right side of the third plank of the ball-hinge system)
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(0.1f, 3.0f);
@@ -1093,6 +1013,7 @@ namespace cs251
 				jointDef.collideConnected = true;
 				m_world->CreateJoint(&jointDef);
 			}
+			//Ball resting on the right side of the 4th plank of the ball-hinge system
 			{
 				b2Body* sbody;
 				b2CircleShape circle;
@@ -1109,6 +1030,7 @@ namespace cs251
 				sbody = m_world->CreateBody(&ballbd);
 				sbody->CreateFixture(&ballfd);
 			}
+			//The fourth plank from top of the ball-hinge system
 			{
 				b2PolygonShape shape;
 				shape.SetAsBox(6.0f, 0.2f);
@@ -1123,7 +1045,7 @@ namespace cs251
 		}
 		
 
-		//arc for the ball to fall on the glass
+		//arc for the ball to fall on the glass from the ball-hinge system
 		{
 			b2Vec2 vs[20];
 			float x=0,y=0; 
@@ -1145,8 +1067,9 @@ namespace cs251
 
 		
 		
-	//tunnel for ball (at the end)
+	//path for ball (at the right end) after the arc 
 	{
+		//Flat surface after the arc 
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(33.7f, 6.0f), b2Vec2(25.0f, 6.0f));
@@ -1155,6 +1078,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 	
 		}
+		//Negative slope surface (going right)
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(33.7f, 6.0f), b2Vec2(49.5f, -4.1f));
@@ -1163,6 +1087,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 	
 		}
+		//Negative slope surface (going right)
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(52.4f, -6.25f), b2Vec2(55.0f, -8.0f));
@@ -1171,6 +1096,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 	
 		}
+		//Negative slope surface (going right) (Upper Side)
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(56.9f, -6.1f), b2Vec2(55.0f, -4.8f));
@@ -1179,7 +1105,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 	
 		}
-	
+		//Circular arc tunnel (Outer)
 		{
 			b2Vec2 vs[24];
 			float x=0,y=5; 
@@ -1205,6 +1131,7 @@ namespace cs251
 			b1->CreateFixture(&chain, 0.0f);
 
 		}
+		//Circular arc tunnel (Inner)
 		{
 			b2Vec2 vs[24];
 			float x=0,y=2; 
@@ -1230,6 +1157,7 @@ namespace cs251
 			b1->CreateFixture(&chain, 0.0f);
 
 		}
+		//Positive slope surface (Going left downwards)
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(58.5f, -3.0f), b2Vec2(55.0f, -4.8f));
@@ -1238,6 +1166,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 	
 		}
+		//Positive slope surface (Going left downwards)
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(58.5f, 0.0f), b2Vec2(53.0f, -2.8f));
@@ -1246,6 +1175,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 	
 		}
+		//Positive slope surface (Going left downwards)
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(52.4f, -6.25f), b2Vec2(35.0f, -15.0f));
@@ -1254,6 +1184,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 	
 		}
+		//arc for the ball to come to the surface containing dominos 
 		{
 			b2Vec2 vs[11];
 			float x=0,y=5; 
@@ -1271,6 +1202,7 @@ namespace cs251
 			b1->CreateFixture(&chain, 0.0f);
 
 		}
+		//flat surface for dominoes (upper surface)
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(33.5f, -20.5f), b2Vec2(74.0f, -20.5f));
@@ -1279,6 +1211,7 @@ namespace cs251
 			b1->CreateFixture(&shape, 0.0f);
 	
 		}
+		//flat surface for dominoes (lower surface)
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(61.0f, -23.0f), b2Vec2(74.0f, -23.0f));
@@ -1292,7 +1225,7 @@ namespace cs251
 	//DOMINOS AT BOTTOM
 	{		
 
-			//revolute joint
+			//revolute joint to push dominos at the bottom surface
 			{	
 				b2PolygonShape shape;
 				shape.SetAsBox(0.1f, 2.0f);
@@ -1321,7 +1254,7 @@ namespace cs251
 				jointDef.collideConnected = true;
 				m_world->CreateJoint(&jointDef);
 			}
-
+			//Dominos 
 			{
 			      b2PolygonShape shape;
 			      shape.SetAsBox(0.2f, 1.0f);
@@ -1338,7 +1271,7 @@ namespace cs251
 			      fd2.shape = &shape2;
 			      fd2.density = 20.0f;
 			      fd2.friction = 0.1f;
-
+			      //upper surface 
 			      for (int i = 0; i < 3; ++i)
 				{ 	
 					
@@ -1349,6 +1282,7 @@ namespace cs251
 					  body->CreateFixture(&fd);
 					
 				}
+				//lower surface
 				for (int i = 0; i < 7; ++i)
 				{ 	
 					
@@ -1367,7 +1301,7 @@ namespace cs251
 	}
 
 
-	//PULLEY SYSTEM LOWER RIGHT SIDE
+	//Pulley system on lower right side (Right)
 	{
 			b2BodyDef *bd = new b2BodyDef;
 			bd->type = b2_dynamicBody;
@@ -1429,7 +1363,8 @@ namespace cs251
 			myjoint->Initialize(box1, box2, worldAnchorGround1, worldAnchorGround2, box1->GetWorldCenter(), box2->GetWorldCenter(), ratio);
 			m_world->CreateJoint(myjoint);
 		}
-		//REVOLVING PLATFORM BOTTOM
+
+		//Revolving Platform at the bottom
 		{
 			b2PolygonShape shape;
 			shape.SetAsBox(3.2f, 0.2f);
@@ -1459,7 +1394,7 @@ namespace cs251
 			m_world->CreateJoint(&jointDef);
 		}
 		
-		//The heavy sphere on the platform
+		//The heavy sphere on the revolving platform at the bottom
 		{
 			b2Body* sbody;
 			b2CircleShape circle;
@@ -1476,8 +1411,8 @@ namespace cs251
 			sbody = m_world->CreateBody(&ballbd);
 			sbody->CreateFixture(&ballfd);
 		}
-			//PULLEY SYSTEM LOWER RIGHT SIDE
-	{
+		//Pulley system on lower right side (Left)
+		{
 			b2BodyDef *bd = new b2BodyDef;
 			bd->type = b2_dynamicBody;
 			bd->position.Set(33,-35);
@@ -1547,7 +1482,7 @@ namespace cs251
 		}
 		}
 
-		//glass of water
+		//Glass of water
 		{	b2BodyDef *bd = new b2BodyDef;
 			bd->type = b2_dynamicBody;
 			bd->position.Set(47,-47);
@@ -1598,6 +1533,7 @@ namespace cs251
 			m_world->CreateJoint(&jointDef);
 
 		}
+		//Water inside the glass of water
 		{
 			
 			b2CircleShape shape;
@@ -1619,6 +1555,7 @@ namespace cs251
 				}
 			}
 		} 
+		//Lower surface having fire
 		{
 			b2EdgeShape shape;
 			shape.Set(b2Vec2(35.0f, -55.0f), b2Vec2(55.0f, -55.0f));
@@ -1629,7 +1566,7 @@ namespace cs251
 		}
 
 		
-		//FIRE
+		//Fire (in the form of close collection of rectangular dynamic bodies of different heights)
 		{
 			      b2PolygonShape shape;
 			      shape.SetAsBox(0.01f, 1.0f);
