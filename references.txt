@@ -1,0 +1,21 @@
+We used references from the following places:
+
+1.) CS251-Software Systems Lab
+    Outlab3 - cs251_box2d_base as the base code for the project
+    http://www.cse.iitb.ac.in/~sharat/current/cs251/Assign/Lab03/
+    
+2.) Box2D manual (From the site- www.box2d.org)
+    http://box2d.org/manual.pdf
+
+3.) Box2D C++ Tutorials (From the site- www.iforce2d.net)
+    http://www.iforce2d.net/b2dtut/
+
+4.) Box2D Forums (From the site- www.box2d.org) 
+    http://box2d.org/forum/viewtopic.php?f=19&t=9079
+
+5.) ChainShape (libgdx API) 
+    https://libgdx.badlogicgames.com/nightlies/docs/api/com/badlogic/gdx/physics/box2d/ChainShape.html
+
+6.) Box2D Tutorials
+    http://www.iforce2d.net/b2dtut/custom-gravity
+
