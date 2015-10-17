@@ -16,10 +16,9 @@
 * 3. This notice may not be removed or altered from any source distribution.
 */
 
-/*
-* Base code for CS 251 Software Systems Lab
-* Department of Computer Science and Engineering, IIT Bombay
-*
+/**
+* Group-30 Hackstreet Boys
+* Siddhant Garg , Ritwick Chaudhry , Sanat Anand
 */
 
 
@@ -47,12 +46,9 @@ namespace cs251
 dominos_t::dominos_t()
 {
     //Ground
-    /*! \var b1
-    * \brief pointer to the body ground
-    */
     b2Body* b1;
 
-    //Ground (Long) at the level of the GATE
+    ///Ground (Long) at the level of the GATE
     {
 
         b2EdgeShape shape;
@@ -62,7 +58,7 @@ dominos_t::dominos_t()
         b1->CreateFixture(&shape, 0.0f);
     }
 
-    //Horizontal shelf of the Dam on which the water rests
+    ///Horizontal shelf of the Dam on which the water rests
     {
         b2PolygonShape shape;
         shape.SetAsBox(6.5f, 0.25f);
@@ -74,7 +70,7 @@ dominos_t::dominos_t()
         ground->CreateFixture(&shape, 0.0f);
     }
 
-    //Top Control Gate Left Wall of Dam
+    ///Top Control Gate Left Wall of Dam
     {
         b2PolygonShape shapeleft;
         shapeleft.SetAsBox(0.5f, 2.0f);
@@ -106,7 +102,7 @@ dominos_t::dominos_t()
 
     }*/
 
-    //Sliding Pipe for Dam water Bottom Piece
+    ///Sliding Pipe for Dam water Bottom Piece
     {
         b2EdgeShape shape;
         shape.Set(b2Vec2(-26.0f, 30.0f), b2Vec2(-18.0f, 20.0f));
@@ -116,7 +112,7 @@ dominos_t::dominos_t()
 
     }
 
-    //Sliding Pipe for Dam water Upper Piece
+    ///Sliding Pipe for Dam water Upper Piece
     {
         b2EdgeShape shape;
         shape.Set(b2Vec2(-24.0f, 36.0f), b2Vec2(-14.0f, 26.0f));
@@ -125,7 +121,7 @@ dominos_t::dominos_t()
         b1->CreateFixture(&shape, 0.0f);
 
     }
-    //Right side Dam Vertical Cover
+    ///Right side Dam Vertical Cover
     {
         b2EdgeShape shape;
         shape.Set(b2Vec2(-24.0f, 36.0f), b2Vec2(-24.0f, 44.8f));
@@ -135,7 +131,7 @@ dominos_t::dominos_t()
 
     }
 
-    //Water Balls in Dam
+    ///Water Balls in Dam
     {
 
         b2CircleShape shape;
@@ -163,7 +159,7 @@ dominos_t::dominos_t()
         }
     }
 
-    //Turbine
+    ///Turbine
     {
         int rad=1.5;
         b2CircleShape circle;
@@ -226,16 +222,16 @@ dominos_t::dominos_t()
         jointDef.collideConnected = true;
         m_world->CreateJoint(&jointDef);
 
-        //Pulley System between the turbine and the the hanging block
+        ///Pulley System between the turbine and the the hanging block
         {
-            //Turbine as the body
+            ///Turbine as the body
             b2BodyDef *bd = new b2BodyDef;
             bd->type = b2_dynamicBody;
             //bd->position.Set(10,8);
             bd->position.Set(10,20);
             bd->fixedRotation = true;
 
-            //Block hanging on the other side
+            ///Block hanging on the other side
             b2FixtureDef *fd1 = new b2FixtureDef;
             fd1->friction = 1.5;
             fd1->restitution = 0.f;
@@ -248,7 +244,7 @@ dominos_t::dominos_t()
             b2Body* box2 = m_world->CreateBody(bd);
             box2->CreateFixture(fd1);
 
-            // The pulley joint
+            /// The pulley joint
             b2PulleyJointDef* myjoint = new b2PulleyJointDef();
             b2Vec2 worldAnchorOnBody1(-10, 30); // Anchor point on body 1 in world axis
             b2Vec2 worldAnchorOnBody2(10, 30); // Anchor point on body 2 in world axis
@@ -261,9 +257,9 @@ dominos_t::dominos_t()
         }
     }
 
-    //The partition between left side and right side of the screen  (Walls)
+    ///The partition between left side and right side of the screen  (Walls)
     {
-        //Inclined plank
+        ///Inclined plank
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(7.5f, 14.0f), b2Vec2(15.0f, 18.0f));
@@ -282,7 +278,7 @@ dominos_t::dominos_t()
 
         }
 
-        //vertical partition for dam water balls on ground
+        ///vertical partition for dam water balls on ground
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(-10.0f, 8.0f), b2Vec2(0.0f, 13.0f));
@@ -310,14 +306,14 @@ dominos_t::dominos_t()
         }
     }
 
-    //Open Box which will collect and return the water back to the top of the dam
+    ///Open Box which will collect and return the water back to the top of the dam
     {
         b2BodyDef *bd = new b2BodyDef;
         bd->type = b2_dynamicBody;
         bd->position.Set(-17.3,5.0);
         bd->fixedRotation = true;
 
-        //The open box
+        ///The open box
         b2FixtureDef *fd1 = new b2FixtureDef;
         fd1->density = 100000000.0;
         fd1->friction = 0.0;
@@ -351,7 +347,7 @@ dominos_t::dominos_t()
 
     }
 
-    //The ground on which the open water box is resting
+    ///The ground on which the open water box is resting
     {
         b2PolygonShape shape;
         shape.SetAsBox(15.0f, 0.75f);
@@ -363,7 +359,7 @@ dominos_t::dominos_t()
         ground->CreateFixture(&shape, 0.0f);
     }
 
-    //The flying plank (which takes the water back to the top of the Dam)
+    ///The flying plank (which takes the water back to the top of the Dam)
     {
         b2PolygonShape shaperight;
         shaperight.SetAsBox(5.0f, 0.1f);
@@ -380,7 +376,7 @@ dominos_t::dominos_t()
         ground->CreateFixture(a);
         ground->SetGravityScale(-0.002);
     }
-    //Right side vertical cover for the lift of the open water box
+    ///Right side vertical cover for the lift of the open water box
     {
 
         b2EdgeShape shape;
@@ -389,7 +385,7 @@ dominos_t::dominos_t()
         b1 = m_world->CreateBody(&bd);
         b1->CreateFixture(&shape, 0.0f);
     }
-    //Left side vertical cover for the lift of the open water box
+    ///Left side vertical cover for the lift of the open water box
     {
 
         b2EdgeShape shape;
@@ -398,7 +394,7 @@ dominos_t::dominos_t()
         b1 = m_world->CreateBody(&bd);
         b1->CreateFixture(&shape, 0.0f);
     }
-    //The Vertical revolving plank which pushes the open  water box towards the right
+    ///The Vertical revolving plank which pushes the open  water box towards the right
     {
         b2PolygonShape shape;
         shape.SetAsBox(0.2f, 10.0f);
@@ -427,7 +423,7 @@ dominos_t::dominos_t()
         jointDef.collideConnected = true;
         m_world->CreateJoint(&jointDef);
     }
-    //Ball resting to strike the air-pump
+    ///Ball resting to strike the air-pump
     {
 
         b2CircleShape shape;
@@ -444,10 +440,7 @@ dominos_t::dominos_t()
         body->CreateFixture(&fd);
 
     }
-
-    //-------------------------------------------------------------------------------------------------
-
-    //Top-most revolving platform (Hit by the balloon second)
+    ///Top-most revolving platform (Hit by the balloon second)
     {
         b2PolygonShape shape;
         shape.SetAsBox(8.2f, 0.2f);
@@ -476,7 +469,7 @@ dominos_t::dominos_t()
         jointDef.collideConnected = false;
         m_world->CreateJoint(&jointDef);
     }
-    //Ball resting on topmost revolving platform
+    ///Ball resting on topmost revolving platform
     {
         b2Body* sbody;
         b2CircleShape circle;
@@ -493,7 +486,7 @@ dominos_t::dominos_t()
         sbody = m_world->CreateBody(&ballbd);
         sbody->CreateFixture(&ballfd);
     }
-    //top horizontal surface on which the dominos rest
+    ///top horizontal surface on which the dominos rest
     {
 
 
@@ -503,7 +496,7 @@ dominos_t::dominos_t()
         b1 = m_world->CreateBody(&bd);
         b1->CreateFixture(&shape, 0.0f);
     }
-    //Dominos at the topmost horizontal plank
+    ///Dominos at the topmost horizontal plank
     {
         b2PolygonShape shape;
         shape.SetAsBox(0.2f, 1.0f);
@@ -521,7 +514,7 @@ dominos_t::dominos_t()
         fd2.density = 20.0f;
         fd2.friction = 0.1f;
 
-        //first set of 30 dominos
+        ///first set of 30 dominos
         for (int i = 0; i < 10; ++i)
         {
             for(int j=0; j<3 ; j++)
@@ -534,7 +527,7 @@ dominos_t::dominos_t()
             }
         }
 
-        //next set of 21 dominos
+        ///next set of 21 dominos
         for (int i = 3; i < 10; ++i)
         {
             for(int j=0; j<3 ; j++)
@@ -547,7 +540,7 @@ dominos_t::dominos_t()
             }
         }
 
-        // last three single dominos
+        /// last three single dominos
         b2BodyDef bd;
         bd.type = b2_dynamicBody;
         bd.position.Set(-44.0f , 45.7f );
@@ -567,7 +560,7 @@ dominos_t::dominos_t()
         body3->CreateFixture(&fd);
     }
 
-    //Heavy ball at the leftmost end of the domino chain at the top horizontal surfa
+    ///Heavy ball at the leftmost end of the domino chain at the top horizontal surfa
     {
         b2Body* sbody;
         b2CircleShape circle;
@@ -586,7 +579,7 @@ dominos_t::dominos_t()
 
 
     }
-    //Inclined surface for the heavy ball to fall on
+    ///Inclined surface for the heavy ball to fall on
     {
         b2EdgeShape shape;
         shape.Set(b2Vec2(-46.0f, 45.0f), b2Vec2(-65.0f, 39.0f));
@@ -594,16 +587,7 @@ dominos_t::dominos_t()
         b1 = m_world->CreateBody(&bd);
         b1->CreateFixture(&shape, 0.0f);
     }
-    /*
-    {
-
-    	b2EdgeShape shape;
-    	shape.Set(b2Vec2(-39.0f, 33.0f), b2Vec2(-39.0f, 33.0f));
-    	b2BodyDef bd;
-    	b1 = m_world->CreateBody(&bd);
-    	b1->CreateFixture(&shape, 0.0f);
-    }*/
-    //Chain Object
+    ///Chain Object
     {
         b2Vec2 vs[50];
         float x=0,y=0;
@@ -622,7 +606,7 @@ dominos_t::dominos_t()
         b1->CreateFixture(&chain, 0.0f);
 
     }
-    //Chain Object
+    ///Chain Object
     {
         b2Vec2 vs[40];
         float x=0,y=0;
@@ -641,7 +625,7 @@ dominos_t::dominos_t()
         b1->CreateFixture(&chain, 0.0f);
 
     }
-    //Chain Object
+    ///Chain Object
     {
         b2Vec2 vs[40];
         float x=0,y=0;
@@ -660,7 +644,7 @@ dominos_t::dominos_t()
         b1->CreateFixture(&chain, 0.0f);
 
     }
-    //Horizontal surface below the open water box for the heavy ball to fall on and push the revolving plank
+    ///Horizontal surface below the open water box for the heavy ball to fall on and push the revolving plank
     {
 
         b2EdgeShape shape;
@@ -670,9 +654,9 @@ dominos_t::dominos_t()
         b1->CreateFixture(&shape, 0.0f);
     }
 
-    //Edges for the Shape of the Air-Pump
+    ///Edges for the Shape of the Air-Pump
     {
-        //left edge
+        ///left edge
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(8.4f, 0.0f), b2Vec2(8.4f, 5.0f));
@@ -681,7 +665,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //right edge upper
+        ///right edge upper
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(9.4f, 1.8f), b2Vec2(9.4f, 5.0f));
@@ -690,7 +674,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //right edge lower
+        ///right edge lower
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(9.4f, 0.0f), b2Vec2(9.4f, 0.9f));
@@ -699,7 +683,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //horizontal pipe edge
+        ///horizontal pipe edge
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(9.4f, 0.4f), b2Vec2(12.8f, 0.40f));
@@ -708,13 +692,13 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
         }
     }
-    //The Pump pf the Air-PumpS
+    ///The Pump pf the Air-PumpS
     {
         b2BodyDef *bd = new b2BodyDef;
         bd->type = b2_dynamicBody;
         bd->position.Set(9.0,5.6);
         //bd->fixedRotation = false;
-        //The open box
+        ///The open box
         b2FixtureDef *fd1 = new b2FixtureDef;
         fd1->density = 0.000000001;
         fd1->friction = 0.5;
@@ -735,7 +719,7 @@ dominos_t::dominos_t()
         box1->CreateFixture(fd1);
         box1->CreateFixture(fd2);
     }
-    //Extremely thin revolving plank for the Air-Pump
+    ///Extremely thin revolving plank for the Air-Pump
     {
         b2PolygonShape shape;
         shape.SetAsBox(2.5f, 0.000005f);
@@ -764,7 +748,7 @@ dominos_t::dominos_t()
         jointDef.collideConnected = false;
         m_world->CreateJoint(&jointDef);
     }
-    //Balloon
+    ///Balloon
     {
         b2Body* sbody;
         b2CircleShape circle;
@@ -782,7 +766,7 @@ dominos_t::dominos_t()
         sbody->CreateFixture(&ballfd);
         sbody->SetGravityScale(-0.2);
     }
-    //Extremely Small ball helping in working of the Air-Pump
+    ///Extremely Small ball helping in working of the Air-Pump
     {
         b2Body* sbody;
         b2CircleShape circle;
@@ -799,11 +783,9 @@ dominos_t::dominos_t()
         sbody = m_world->CreateBody(&ballbd);
         sbody->CreateFixture(&ballfd);
     }
-
-    //---------------------------------------------------------------------
-    //The ball-hinge system
+    ///The ball-hinge system
     {
-        //Revolving Platform at the top to which the balloon strikes first
+        ///Revolving Platform at the top to which the balloon strikes first
         {
             b2PolygonShape shape;
             shape.SetAsBox(8.2f, 0.2f);
@@ -832,7 +814,7 @@ dominos_t::dominos_t()
             jointDef.collideConnected = false;
             m_world->CreateJoint(&jointDef);
         }
-        //Ball resting on the above horizontal revolving platform
+        ///Ball resting on the above horizontal revolving platform
         {
             b2Body* sbody;
             b2CircleShape circle;
@@ -849,7 +831,7 @@ dominos_t::dominos_t()
             sbody = m_world->CreateBody(&ballbd);
             sbody->CreateFixture(&ballfd);
         }
-        //Top plank of the ball-hinge system
+        ///Top plank of the ball-hinge system
         {
             b2PolygonShape shape;
             shape.SetAsBox(6.0f, 0.2f);
@@ -860,7 +842,7 @@ dominos_t::dominos_t()
             ground->SetTransform( ground->GetPosition(), 0 );
             ground->CreateFixture(&shape, 0.0f);
         }
-        //Left cover at the top plank for the ball-hinge on the left side
+        ///Left cover at the top plank for the ball-hinge on the left side
         {
             b2PolygonShape shape;
             shape.SetAsBox(0.2f, 0.4f);
@@ -871,7 +853,7 @@ dominos_t::dominos_t()
             ground->SetTransform( ground->GetPosition(), 0 );
             ground->CreateFixture(&shape, 0.0f);
         }
-        // Vertical revolving plank (Right side of the top plank of the ball-hinge system)
+        /// Vertical revolving plank (Right side of the top plank of the ball-hinge system)
         {
             b2PolygonShape shape;
             shape.SetAsBox(0.1f, 3.0f);
@@ -900,7 +882,7 @@ dominos_t::dominos_t()
             jointDef.collideConnected = true;
             m_world->CreateJoint(&jointDef);
         }
-        //Ball resting on the right side of the 2nd plank of the ball-hinge system
+        ///Ball resting on the right side of the 2nd plank of the ball-hinge system
         {
             b2Body* sbody;
             b2CircleShape circle;
@@ -917,7 +899,7 @@ dominos_t::dominos_t()
             sbody = m_world->CreateBody(&ballbd);
             sbody->CreateFixture(&ballfd);
         }
-        //The second plank from top of the ball-hinge system
+        ///The second plank from top of the ball-hinge system
         {
             b2PolygonShape shape;
             shape.SetAsBox(6.0f, 0.2f);
@@ -928,7 +910,7 @@ dominos_t::dominos_t()
             ground->SetTransform( ground->GetPosition(), 0 );
             ground->CreateFixture(&shape, 0.0f);
         }
-        // Vertical revolving plank (Left side of the second plank of the ball-hinge system)
+        /// Vertical revolving plank (Left side of the second plank of the ball-hinge system)
         {
             b2PolygonShape shape;
             shape.SetAsBox(0.1f, 3.0f);
@@ -957,7 +939,7 @@ dominos_t::dominos_t()
             jointDef.collideConnected = true;
             m_world->CreateJoint(&jointDef);
         }
-        //Ball resting on the left side of the 3rd plank of the ball-hinge system
+        ///Ball resting on the left side of the 3rd plank of the ball-hinge system
         {
             b2Body* sbody;
             b2CircleShape circle;
@@ -974,7 +956,7 @@ dominos_t::dominos_t()
             sbody = m_world->CreateBody(&ballbd);
             sbody->CreateFixture(&ballfd);
         }
-        //The third plank from top of the ball-hinge system
+        ///The third plank from top of the ball-hinge system
         {
             b2PolygonShape shape;
             shape.SetAsBox(6.0f, 0.2f);
@@ -985,7 +967,7 @@ dominos_t::dominos_t()
             ground->SetTransform( ground->GetPosition(), 0 );
             ground->CreateFixture(&shape, 0.0f);
         }
-        // Vertical revolving plank (Right side of the third plank of the ball-hinge system)
+        /// Vertical revolving plank (Right side of the third plank of the ball-hinge system)
         {
             b2PolygonShape shape;
             shape.SetAsBox(0.1f, 3.0f);
@@ -1014,7 +996,7 @@ dominos_t::dominos_t()
             jointDef.collideConnected = true;
             m_world->CreateJoint(&jointDef);
         }
-        //Ball resting on the right side of the 4th plank of the ball-hinge system
+        ///Ball resting on the right side of the 4th plank of the ball-hinge system
         {
             b2Body* sbody;
             b2CircleShape circle;
@@ -1031,7 +1013,7 @@ dominos_t::dominos_t()
             sbody = m_world->CreateBody(&ballbd);
             sbody->CreateFixture(&ballfd);
         }
-        //The fourth plank from top of the ball-hinge system
+        ///The fourth plank from top of the ball-hinge system
         {
             b2PolygonShape shape;
             shape.SetAsBox(6.0f, 0.2f);
@@ -1046,7 +1028,7 @@ dominos_t::dominos_t()
     }
 
 
-    //arc for the ball to fall on the glass from the ball-hinge system
+    ///arc for the ball to fall on the glass from the ball-hinge system
     {
         b2Vec2 vs[20];
         float x=0,y=0;
@@ -1068,9 +1050,9 @@ dominos_t::dominos_t()
 
 
 
-    //path for ball (at the right end) after the arc
+    ///path for ball (at the right end) after the arc
     {
-        //Flat surface after the arc
+        ///Flat surface after the arc
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(33.7f, 6.0f), b2Vec2(25.0f, 6.0f));
@@ -1079,7 +1061,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //Negative slope surface (going right)
+        ///Negative slope surface (going right)
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(33.7f, 6.0f), b2Vec2(49.5f, -4.1f));
@@ -1088,7 +1070,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //Negative slope surface (going right)
+        ///Negative slope surface (going right)
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(52.4f, -6.25f), b2Vec2(55.0f, -8.0f));
@@ -1097,7 +1079,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //Negative slope surface (going right) (Upper Side)
+        ///Negative slope surface (going right) (Upper Side)
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(56.9f, -6.1f), b2Vec2(55.0f, -4.8f));
@@ -1106,7 +1088,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //Circular arc tunnel (Outer)
+        ///Circular arc tunnel (Outer)
         {
             b2Vec2 vs[24];
             float x=0,y=5;
@@ -1132,7 +1114,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&chain, 0.0f);
 
         }
-        //Circular arc tunnel (Inner)
+        ///Circular arc tunnel (Inner)
         {
             b2Vec2 vs[24];
             float x=0,y=2;
@@ -1158,7 +1140,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&chain, 0.0f);
 
         }
-        //Positive slope surface (Going left downwards)
+        ///Positive slope surface (Going left downwards)
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(58.5f, -3.0f), b2Vec2(55.0f, -4.8f));
@@ -1167,7 +1149,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //Positive slope surface (Going left downwards)
+        ///Positive slope surface (Going left downwards)
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(58.5f, 0.0f), b2Vec2(53.0f, -2.8f));
@@ -1176,7 +1158,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //Positive slope surface (Going left downwards)
+        ///Positive slope surface (Going left downwards)
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(52.4f, -6.25f), b2Vec2(35.0f, -15.0f));
@@ -1185,7 +1167,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //arc for the ball to come to the surface containing dominos
+        ///arc for the ball to come to the surface containing dominos
         {
             b2Vec2 vs[11];
             float x=0,y=5;
@@ -1203,7 +1185,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&chain, 0.0f);
 
         }
-        //flat surface for dominoes (upper surface)
+        ///flat surface for dominoes (upper surface)
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(33.5f, -20.5f), b2Vec2(74.0f, -20.5f));
@@ -1212,7 +1194,7 @@ dominos_t::dominos_t()
             b1->CreateFixture(&shape, 0.0f);
 
         }
-        //flat surface for dominoes (lower surface)
+        ///flat surface for dominoes (lower surface)
         {
             b2EdgeShape shape;
             shape.Set(b2Vec2(61.0f, -23.0f), b2Vec2(74.0f, -23.0f));
@@ -1223,10 +1205,10 @@ dominos_t::dominos_t()
         }
     }
 
-    //DOMINOS AT BOTTOM
+    ///Dominos at bottom
     {
 
-        //revolute joint to push dominos at the bottom surface
+        ///revolute joint to push dominos at the bottom surface
         {
             b2PolygonShape shape;
             shape.SetAsBox(0.1f, 2.0f);
@@ -1255,7 +1237,7 @@ dominos_t::dominos_t()
             jointDef.collideConnected = true;
             m_world->CreateJoint(&jointDef);
         }
-        //Dominos
+        ///Dominos
         {
             b2PolygonShape shape;
             shape.SetAsBox(0.2f, 1.0f);
@@ -1272,7 +1254,7 @@ dominos_t::dominos_t()
             fd2.shape = &shape2;
             fd2.density = 20.0f;
             fd2.friction = 0.1f;
-            //upper surface
+            ///upper surface
             for (int i = 0; i < 3; ++i)
             {
 
@@ -1283,7 +1265,7 @@ dominos_t::dominos_t()
                 body->CreateFixture(&fd);
 
             }
-            //lower surface
+            ///lower surface
             for (int i = 0; i < 7; ++i)
             {
 
@@ -1302,14 +1284,14 @@ dominos_t::dominos_t()
     }
 
 
-    //Pulley system on lower right side (Right)
+    ///Pulley system on lower right side (Right)
     {
         b2BodyDef *bd = new b2BodyDef;
         bd->type = b2_dynamicBody;
         bd->position.Set(60,-27);
         bd->fixedRotation = true;
 
-        //The open box
+        ///The open box
         b2FixtureDef *fd1 = new b2FixtureDef;
         fd1->density = 0.0001;
         fd1->friction = 0.5;
@@ -1340,7 +1322,7 @@ dominos_t::dominos_t()
         box1->CreateFixture(fd2);
         box1->CreateFixture(fd3);
 
-        //The bar
+        ///The bar
         bd->position.Set(40,-32);
         b2FixtureDef *fd4 = new b2FixtureDef;
         fd4->density = 0.0003;
@@ -1354,7 +1336,7 @@ dominos_t::dominos_t()
         b2Body* box2 = m_world->CreateBody(bd);
         box2->CreateFixture(fd4);
 
-        // The pulley joint
+        /// The pulley joint
         b2PulleyJointDef* myjoint = new b2PulleyJointDef();
         b2Vec2 worldAnchorOnBody1(40, -27); // Anchor point on body 1 in world axis
         b2Vec2 worldAnchorOnBody2(60, -27); // Anchor point on body 2 in world axis
@@ -1365,7 +1347,7 @@ dominos_t::dominos_t()
         m_world->CreateJoint(myjoint);
     }
 
-    //Revolving Platform at the bottom
+    ///Revolving Platform at the bottom
     {
         b2PolygonShape shape;
         shape.SetAsBox(3.2f, 0.2f);
@@ -1395,7 +1377,7 @@ dominos_t::dominos_t()
         m_world->CreateJoint(&jointDef);
     }
 
-    //The heavy sphere on the revolving platform at the bottom
+    ///The heavy sphere on the revolving platform at the bottom
     {
         b2Body* sbody;
         b2CircleShape circle;
@@ -1412,14 +1394,14 @@ dominos_t::dominos_t()
         sbody = m_world->CreateBody(&ballbd);
         sbody->CreateFixture(&ballfd);
     }
-    //Pulley system on lower right side (Left)
+    ///Pulley system on lower right side (Left)
     {
         b2BodyDef *bd = new b2BodyDef;
         bd->type = b2_dynamicBody;
         bd->position.Set(33,-35);
         bd->fixedRotation = true;
 
-        //The open box
+        ///The open box
         b2FixtureDef *fd1 = new b2FixtureDef;
         fd1->density = 0.01;
         fd1->friction = 0.5;
@@ -1450,7 +1432,7 @@ dominos_t::dominos_t()
         box1->CreateFixture(fd2);
         box1->CreateFixture(fd3);
 
-        //The bar
+        ///The bar
         bd->position.Set(23,-38);
         b2FixtureDef *fd4 = new b2FixtureDef;
         fd4->density = 0.011;
@@ -1464,7 +1446,7 @@ dominos_t::dominos_t()
         b2Body* box2 = m_world->CreateBody(bd);
         box2->CreateFixture(fd4);
 
-        // The pulley joint
+        /// The pulley joint
         b2PulleyJointDef* myjoint = new b2PulleyJointDef();
         b2Vec2 worldAnchorOnBody1(23, -38); // Anchor point on body 1 in world axis
         b2Vec2 worldAnchorOnBody2(33, -35); // Anchor point on body 2 in world axis
@@ -1483,13 +1465,13 @@ dominos_t::dominos_t()
         }
     }
 
-    //Glass of water
+    ///Glass of water
     {
         b2BodyDef *bd = new b2BodyDef;
         bd->type = b2_dynamicBody;
         bd->position.Set(47,-47);
         //bd->fixedRotation = false;
-        //The open box
+        ///The open box
         b2FixtureDef *fd1 = new b2FixtureDef;
         fd1->density = 3500000.f;
         fd1->friction = 0.5;
@@ -1535,7 +1517,7 @@ dominos_t::dominos_t()
         m_world->CreateJoint(&jointDef);
 
     }
-    //Water inside the glass of water
+    ///Water inside the glass of water
     {
 
         b2CircleShape shape;
@@ -1557,7 +1539,7 @@ dominos_t::dominos_t()
             }
         }
     }
-    //Lower surface having fire
+    ///Lower surface having fire
     {
         b2EdgeShape shape;
         shape.Set(b2Vec2(35.0f, -55.0f), b2Vec2(55.0f, -55.0f));
@@ -1568,7 +1550,7 @@ dominos_t::dominos_t()
     }
 
 
-    //Fire (in the form of close collection of rectangular dynamic bodies of different heights)
+    ///Fire (in the form of close collection of rectangular dynamic bodies of different heights)
     {
         b2PolygonShape shape;
         shape.SetAsBox(0.01f, 1.0f);
