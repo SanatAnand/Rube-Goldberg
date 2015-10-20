@@ -60,9 +60,9 @@ INCS := $(wildcard $(SRCDIR)/*.hpp)
 OBJS := $(SRCS:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 
-.PHONY: all setup doc clean distclean
+.PHONY: release setup doc clean distclean
 
-all: setup $(BINDIR)/$(TARGET)
+release: setup $(BINDIR)/$(TARGET)
 
 setup:
 	@$(ECHO) "Setting up compilation..."

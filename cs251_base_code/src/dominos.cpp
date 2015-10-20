@@ -240,7 +240,8 @@ dominos_t::dominos_t()
         ///Another shape is created for a second body which will not be visible on the screen
         ///but will provide the support for the revolute joint. This body does not have a fixture . 
         ///This body can be of any shape and is set at the same cooordinates as center of initial body.
-        shape2.SetAsBox(2.0f, 2.0f);
+	b2PolygonShape shape2;        
+	shape2.SetAsBox(2.0f, 2.0f);
         b2BodyDef bd2;
         bd2.position.Set(-10.0f, 17.0f);
         b2Body* body2 = m_world->CreateBody(&bd2);
@@ -1568,7 +1569,8 @@ dominos_t::dominos_t()
     ///This body can be of any shape and is set at the same cooordinates as center of initial body.
     ///To create the revolute joint, a variable of type b2RevoluteJointDef is created and these 2 bodies are set to it.
     ///The (0,0) and (0,0) indicate that the revolute joint is at the center of both bodies.
-        b2PolygonShape shape;
+     {
+	b2PolygonShape shape;
         shape.SetAsBox(3.2f, 0.2f);
 
         b2BodyDef bd;
