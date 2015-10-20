@@ -115,7 +115,28 @@ This is a screen-shot of the entire simulation just when it begins.\\\\
 
 \chapter{Profiling and References}
 \section{Profiling}
+Earlier the functions consuming maximum time were:
+\begin{enumerate}
+\item b2ContactSolver::SolveVelocityConstraints()
+\item b2Vec2::b2Vec2(float, float)
+\item operator-(b2Vec2 const\&, b2Vec2 const\&)
+\item operator+(b2Vec2 const\&, b2Vec2 const\&)
+\item operator*(float, b2Vec2 const\&)
+\end{enumerate}
+Earlier the call graph image created was:\\
+\includegraphics[scale=0.05]{performanceold}\\
 
+Now the functions consuming maximum time are:
+\begin{enumerate}
+\item b2ContactSolver::SolveVelocityConstraints()
+\item operator-(b2Vec2 const\&, b2Vec2 const\&)
+\item operator*(float, b2Vec2 const\&)
+\item b2Vec2::b2Vec2(float, float)
+\item b2World::SolveTOI(b2TimeStep const\&)
+\end{enumerate}
+
+Now the call graph image created is:\\
+\includegraphics[scale=0.05]{performancenew}\\
 
 \section{Concepts learnt and used}
 \begin{itemize}

@@ -101,6 +101,7 @@ profile: $(BINDIR)/cs251_base
 report:
 	@$(ECHO) -n "Generating Report ...  "
 	@$(TEX) $(REPORT).tex
+	@$(TEX) $(REPORT).tex
 	@$(ECHO) -n "Done"
 
 codeDoc:

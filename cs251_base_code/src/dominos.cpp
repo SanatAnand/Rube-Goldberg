@@ -157,7 +157,7 @@ dominos_t::dominos_t()
         fd.density = 500000.0f;
         fd.friction = 0.1f;
         int j=0;
-        int i=0;
+        //int i=0;
         while(j<15)
         {
             int i=0;
