@@ -13,6 +13,9 @@ DOXYGEN = doxygen
 ######################################
 # Project Name (generate executable with this name)
 TARGET = cs251_base
+REPORT = main
+TEX = pdflatex
+BIBTEX = bibtex
 
 # Project Paths
 PROJECT_ROOT=./
@@ -95,6 +98,11 @@ profile: $(BINDIR)/cs251_base
 	gprof $(TARGET) gmon.out > profiling.txt; \
 	cd ../
 
+report:
+	@$(ECHO) -n "Generating Report ...  "
+	@$(TEX) $(REPORT).tex
+	@$(ECHO) -n "Done"
+
 codeDoc:
 	@$(ECHO) -n "Generating Doxygen Documentation ...  "
 	@$(RM) -rf doc/html
@@ -104,6 +112,7 @@ codeDoc:
 clean:
 	@$(ECHO) -n "Cleaning up..."
 	@$(RM) -rf $(OBJDIR) *~ $(DEPS) $(SRCDIR)/*~
+	@$(RM) -rf *.aux *.bbl *.blg *.log *.pdf *.toc *.snm *.out *.bcf *.xml
 	@$(ECHO) "Done"
 
 distclean: clean
