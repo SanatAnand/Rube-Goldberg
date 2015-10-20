@@ -90,6 +90,11 @@ $(OBJS): $(OBJDIR)/%.o : $(SRCDIR)/%.cpp
 	fi;
 	@$(RM) -f temp.log temp.err
 
+profile: $(BINDIR)/cs251_base
+	@cd $(BINDIR); \
+	gprof $(TARGET) gmon.out > profiling.txt; \
+	cd ../
+
 codeDoc:
 	@$(ECHO) -n "Generating Doxygen Documentation ...  "
 	@$(RM) -rf doc/html
